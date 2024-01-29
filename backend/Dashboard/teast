@@ -1,0 +1,25 @@
+# Home/views.py
+from django.shortcuts import render
+import requests
+
+def home(request):
+    # Replace 'YOUR_API_ENDPOINT' with the actual API endpoint you want to call
+    api_endpoint = 'YOUR_API_ENDPOINT'
+
+    # Make a GET request to the API
+    try:
+        response = requests.get(api_endpoint)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            # Parse the JSON response
+            api_data = response.json()
+
+            # You can now use the 'api_data' in your template or manipulate it as needed
+            return render(request, 'home/index.html', {'api_data': api_data})
+        else:
+            # Handle other status codes if needed
+            return render(request, 'home/index.html', {'error': f'API Request Failed: {response.status_code}'})
+    except Exception as e:
+        # Handle exceptions such as connection errors
+        return render(request, 'home/index.html', {'error': f'Error: {str(e)}'})
